@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>P,R,S - Stats</title>
+  <link rel="stylesheet" href="styles/style.css">
+ </head>
+<body>
+  <% include global/header %>
+
+  <div id="stats">
+    <h2>Stats- ____ games played</h2>
+    <table>
+      <tr>
+        <th class="top_row">Player Name</th>
+        <th class="top_row">Games Played</th>
+        <th class="top_row">Games Won</th>
+        <th class="top_row">Games Lost</th>
+        <th class="top_row">Games Tied</th>
+      </tr>
+      <% for (var i=0; i< user.length; i++){%>
+      <tr>
+        <td><%= user[i]["name"]%></td>
+        <td><%= user[i]["games_played"]%></td>
+        <td><%= user[i]["games_won"]%></td>
+        <td><%= user[i]["games_lost"]%></td>
+        <td><%= user[i]["games_played"]-(user[i]["games_lost"]+user[i]["games_won"])%></td>
+      </tr>
+      <%}%>
+    </table>
+  </div>
+
+  <% include global/footer %>
+ </body>
+</html>
