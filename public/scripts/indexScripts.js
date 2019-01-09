@@ -1,11 +1,5 @@
 var player_name = localStorage.getItem("player_name");
 
-if(!player_name){
-  showOrNot(document.getElementById("enter_name"), true);
-}else {
-  updateNames(player_name);
-  showOrNot(document.getElementById("throw_choice"), true);
-}
 
 ///////////////////Event Listions//////////////////
 document.getElementById("enter_name_button").addEventListener("click", function(){
@@ -24,12 +18,6 @@ function updateNames(name){
     name_spots[i].innerHTML = name;
   }
 }
-console.log(document.getElementById("opponentDrop"));
-document.getElementById("opponentDrop").addEventListener("click", function(){
-  if(document.getElementById("opponentDrop").value=="bones"){
-    showOrNot(document.getElementById("bones_waiting"),true);
-  }
-});
 
 function showOrNot(div_element, show){
   if(show && div_element.classList.contains("hidden")){

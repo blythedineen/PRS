@@ -32,8 +32,10 @@ app.get('/login', function(request, response){
 app.get('/:user/results', function(request, response){
   var user_data={
       name: request.params.user,
-      weapon: request.query.weapon
+      weapon: request.query.weapon,
+      villain: request.query.villain
   };
+  
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render('results', {user:user_data});
