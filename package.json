@@ -1,0 +1,24 @@
+{
+  "name": "prs_real",
+  "version": "1.0.0",
+  "description": "",
+  "main": "data_server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blythedineen/PRS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blythedineen/PRS/issues"
+  },
+  "homepage": "https://github.com/blythedineen/PRS#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "node.js": "0.0.0",
+    "serve-favicon": "^2.5.0"
+  }
+}

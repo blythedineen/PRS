@@ -1,6 +1,10 @@
 var player_name = localStorage.getItem("player_name");
 
 
+document.getElementById("opponentDrop").addEventListener("change",function(){
+  if(document.getElementById("opponentDrop").value=="bone_")
+
+}
 
 ///////////////////Helper function//////////////////
 function updateNames(name){
