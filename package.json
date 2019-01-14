@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/blythedineen/PRS#readme",
   "dependencies": {
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
     "node.js": "0.0.0",
     "serve-favicon": "^2.5.0"
