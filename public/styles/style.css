@@ -1,19 +1,4 @@
 
-h1 {
-  color: #ff0000;
-  background-color: #cccccc;
-  text-align: center;
-}
-
-div {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  margin-right: 50px;
-  margin-left: 50px;
-  background-color: #ffffff;
-  background-color: #dddddd;
-
-}
 table, th, td {
    border: 1px solid black;
 }
@@ -27,4 +12,51 @@ table, th, td {
 
 .visible{
   display:block;
+}
+
+
+
+
+body{
+  background-color: #C70039;
+  color: #ffffff;
+  font-family: American Typewriter, serif;
+}
+
+header{
+  align-items: center;
+}
+
+h1 {
+  color: #ffffff;
+  background-color: #900C3F;
+  text-align: center;
+}
+
+div {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-right: 50px;
+  margin-left: 50px;
+  color: #ffffff;
+  background-color: #900C3F;
+  margin: auto;
+  width: 50%;
+  border: 1px solid white;
+  padding: 5px;
+
+}
+
+.hidden{
+  display: none;
+}
+
+.visible{
+  display:block;
+}
+.good{
+  color:#ffbad1;
+}
+.bad{
+  color:#f4eb42;
 }
