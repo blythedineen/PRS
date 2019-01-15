@@ -2,9 +2,44 @@ var player_name = localStorage.getItem("player_name");
 
 
 document.getElementById("opponentDrop").addEventListener("change",function(){
-  if(document.getElementById("opponentDrop").value=="bone_")
+  if(document.getElementById("opponentDrop").value=="bones"){
+    showOrNot("bones_waiting",true);
+  }
+  else if(document.getElementById("opponentDrop").value=="gato"){
+    showOrNot("gato_waiting",true);
+  }
+  else if(document.getElementById("opponentDrop").value=="comic_hans"){
+    showOrNot("comic_hans_waiting",true);
+  }
+  else if(document.getElementById("opponentDrop").value=="harry"){
+    showOrNot("harry_waiting",true);
+  }
+  else if(document.getElementById("opponentDrop").value=="manny"){
+    showOrNot("manny_waiting",true);
+  }
+  else if(document.getElementById("opponentDrop").value=="mickey"){
+    showOrNot("mickey_waiting",true);
+  }
+  else if(document.getElementById("opponentDrop").value=="mr_modern"){
+    showOrNot("mr_modern_waiting",true);
+  }
+  else if(document.getElementById("opponentDrop").value=="pixie"){
+    showOrNot("pixie_waiting",true);
+  }
+  else if(document.getElementById("opponentDrop").value=="regal"){
+    showOrNot("regal_waiting",true);
+  }
+  else if(document.getElementById("opponentDrop").value=="spock"){
+    showOrNot("spock_waiting",true);
+  }
+  else if(document.getElementById("opponentDrop").value=="the_boss"){
+    showOrNot("the_boss_waiting",true);
+  }
+  else if(document.getElementById("opponentDrop").value=="the_magician"){
+    showOrNot("the_magician_waiting",true);
+  }
 
-}
+})
 
 ///////////////////Helper function//////////////////
 function updateNames(name){
@@ -14,12 +49,7 @@ function updateNames(name){
     name_spots[i].innerHTML = name;
   }
 }
-console.log(document.getElementById("opponentDrop"));
-document.getElementById("opponentDrop").addEventListener("click", function(){
-  if(document.getElementById("opponentDrop").value=="bones"){
-    showOrNot(document.getElementById("bones_waiting"),true);
-  }
-});
+
 
 function showOrNot(div_element, show){
   if(show && div_element.classList.contains("hidden")){
