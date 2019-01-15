@@ -1,25 +1,6 @@
-
-table, th, td {
-   border: 1px solid black;
-}
-.top_row{
-  background-color: #000000;
-  color: #ffffff;
-}
-.hidden{
-  display: none;
-}
-
-.visible{
-  display:block;
-}
-
-
-
-
 body{
-  background-color: #C70039;
-  color: #ffffff;
+  background-color: #89e3f0;
+  color: #d7f3f9;
   font-family: American Typewriter, serif;
 }
 
@@ -28,8 +9,8 @@ header{
 }
 
 h1 {
-  color: #ffffff;
-  background-color: #900C3F;
+  color: #b3f3f4;
+  background-color: #41c1dd;
   text-align: center;
 }
 
@@ -38,8 +19,8 @@ div {
   margin-bottom: 50px;
   margin-right: 50px;
   margin-left: 50px;
-  color: #ffffff;
-  background-color: #900C3F;
+  color: #b3f3f4;
+  background-color: #41c1dd;
   margin: auto;
   width: 50%;
   border: 1px solid white;
@@ -59,4 +40,12 @@ div {
 }
 .bad{
   color:#f4eb42;
+}
+
+table, th, td {
+   border: 1px solid black;
+}
+.top_row{
+  background-color: #000000;
+  color: #ffffff;
 }
