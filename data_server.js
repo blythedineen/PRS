@@ -29,17 +29,98 @@ app.get('/login', function(request, response){
   response.render('game', {user:user_data});
 });
 
+
 app.get('/:user/results', function(request, response){
+  var stuff = gameResult(request.query.weapon,request.query.villain)
   var user_data={
       name: request.params.user,
       weapon: request.query.weapon,
-      villain: request.query.villain
+      villain: request.query.villain,
+      result: stuff[1],
+      villainWeapon: stuff[0]
   };
-  
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render('results', {user:user_data});
 });
+
+var villainStuff = []
+function gameResult(weapon,villain){
+  var villainWeapon = strategy(weapon,villain);
+  var villainStuff = []
+  if(villainWeapon=="rock" && weapon=="rock" || villainWeapon=="paper" && weapon=="paper" || villainWeapon=="scissors" && weapon=="scissors"){
+    villainStuff=[villainWeapon,"tie"];
+  }
+  if(villainWeapon=="rock" && weapon=="scissors" || villainWeapon=="paper" && weapon=="rock" || villainWeapon=="scissors" && weapon=="paper"){
+    villainStuff=[villainWeapon,"lose"];
+  }
+  if(weapon=="rock" && villainWeapon=="scissors" || weapon=="paper" && villainWeapon=="rock" || weapon=="scissors" && villainWeapon=="paper"){
+    villainStuff=[villainWeapon,"win"];
+  }
+  return villainStuff;
+}
+
+function strategy(weapon,villain){
+  if(villain == "bones"){
+    return "rock";
+  }
+
+  if(villain == "comic_hans"){
+    if(weapon=="rock"){
+      return "rock"
+    }if(weapon=="paper"){
+      return "paper"
+    }if(weapon=="scissors"){
+      return "scissors"
+    }
+  }
+
+  if(villain == "gato"){
+      return "paper";
+  }
+
+  if(villain == "harry"){
+      return "scissors";
+  }
+
+  if(villain == "manny"){
+      return "scissors";
+  }
+
+  if(villain == "mickey"){
+      return "scissors";
+  }
+
+  if(villain == "mr_modern"){
+      return "scissors";
+  }
+
+  if(villain == "pixie"){
+        return "scissors";
+  }
+
+  if(villain == "regal"){
+      return "scissors";
+  }
+
+  if(villain == "spock"){
+    return "scissors";
+  }
+
+  if(villain == "the_boss"){
+      return "scissors";
+  }
+
+  if(villain == "the_magician"){
+      if(weapon=="rock"){
+        return "paper"
+      }if(weapon=="paper"){
+        return "scissors"
+      }if(weapon=="scissors"){
+        return "rock"
+      }
+  } else{return "rock";}
+}
 
 app.get('/rules', function(request, response){
   response.status(200);
@@ -66,8 +147,6 @@ app.get('/stats', function(request, response){
     user_data.push(user);
 }
 console.log(user_data);
-
-
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render('stats',{user:user_data});
