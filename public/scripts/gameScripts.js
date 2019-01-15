@@ -2,44 +2,57 @@ var player_name = localStorage.getItem("player_name");
 
 
 document.getElementById("opponentDrop").addEventListener("change",function(){
-  if(document.getElementById("opponentDrop").value=="bones"){
-    showOrNot("bones_waiting",true);
+  hideAll();
+  showOrNot(document.getElementById(document.getElementById("opponentDrop").value+"_waiting"), true);
+})
+  function hideAll(){
+    var spots=document.getElementsByClassName("villain_pictures");
+    for(var i=0; i<spots.length;i++){
+      console.log(spots[i]);
+      showOrNot(document.getElementById(spots[i].id),false);
+    }
+  }
+  /*if(document.getElementById("opponentDrop").value==){
+    showOrNot(document.getElementById("bones_waiting"),true);
   }
   else if(document.getElementById("opponentDrop").value=="gato"){
-    showOrNot("gato_waiting",true);
+    showOrNot(document.getElementById("gato_waiting"),true);
   }
   else if(document.getElementById("opponentDrop").value=="comic_hans"){
-    showOrNot("comic_hans_waiting",true);
+    showOrNot(document.getElementById("comic_hans_waiting"),true);
   }
   else if(document.getElementById("opponentDrop").value=="harry"){
-    showOrNot("harry_waiting",true);
+    showOrNot(document.getElementById("harry_waiting"),true);
   }
   else if(document.getElementById("opponentDrop").value=="manny"){
-    showOrNot("manny_waiting",true);
+    showOrNot(document.getElementById("manny_waiting"),true);
   }
   else if(document.getElementById("opponentDrop").value=="mickey"){
-    showOrNot("mickey_waiting",true);
+    showOrNot(document.getElementById("mickey_waiting"),true);
   }
   else if(document.getElementById("opponentDrop").value=="mr_modern"){
-    showOrNot("mr_modern_waiting",true);
+    showOrNot(document.getElementById("mr_modern_waiting"),true);
   }
   else if(document.getElementById("opponentDrop").value=="pixie"){
-    showOrNot("pixie_waiting",true);
+    showOrNot(document.getElementById("pixie_waiting"),true);
   }
   else if(document.getElementById("opponentDrop").value=="regal"){
-    showOrNot("regal_waiting",true);
+    showOrNot(document.getElementById("regal_waiting"),true);
   }
   else if(document.getElementById("opponentDrop").value=="spock"){
-    showOrNot("spock_waiting",true);
+    showOrNot(document.getElementById("spock_waiting"),true);
   }
   else if(document.getElementById("opponentDrop").value=="the_boss"){
-    showOrNot("the_boss_waiting",true);
+    showOrNot(document.getElementById("the_boss_waiting"),true);
   }
   else if(document.getElementById("opponentDrop").value=="the_magician"){
-    showOrNot("the_magician_waiting",true);
+    showOrNot(document.getElementById("the_magician_waiting"),true);
   }
+  else {
 
-})
+  }*/
+
+
 
 ///////////////////Helper function//////////////////
 function updateNames(name){
