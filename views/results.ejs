@@ -2,7 +2,8 @@
 <html>
 <head>
   <title>P,R,S - Results</title>
-  <link rel="stylesheet" href="public/styles/style.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <!-- Style sheet isn't linking on results page -->
  </head>
 
 <body>
@@ -10,6 +11,11 @@
   <div id="results">
       <h2>Game Results</h2>
       <h4><%=user.name%>, you <%=user.result%> with <%=user.weapon%> against <%=user.villain%> who used <%=user.villainWeapon%>! </h4>
+        <!-- photos -->
+        <img id="villainImg" src="../images/<%=user.villain%>_<%=user.villainWeapon%>.svg" width="200" height= "200" align="left">
+        <!-- still need player hands -->
+        <img id="playerImg" src="../images/player_waiting.png" width="200" height= "200" align="left">
+        <!-- Need replay button -->
     </div>
   <% include global/footer %>
   <script src="scripts/scripts.js"></script>
