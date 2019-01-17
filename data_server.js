@@ -22,13 +22,20 @@ app.get('/', function(request, response){
 
 app.get('/login', function(request, response){
   var user_data={
-      name: request.query.player_name
+      name: request.query.player_name,
+      password: request.query.password
   };
+  fs.writeFile("data/users.csv",JSON.stringify(user_data),"utf8");
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render('game', {user:user_data});
 });
 
+app.get('/logout', function(request, response){
+  response.status(200);
+  response.setHeader('Content-Type', 'text/html')
+  response.render('index');
+});
 
 app.get('/:user/results', function(request, response){
   var stuff = gameResult(request.query.weapon,request.query.villain)

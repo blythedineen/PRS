@@ -24,12 +24,7 @@ function updateNames(name){
     name_spots[i].innerHTML = name;
   }
 }
-console.log(document.getElementById("opponentDrop"));
-document.getElementById("opponentDrop").addEventListener("click", function(){
-  if(document.getElementById("opponentDrop").value=="bones"){
-    showOrNot(document.getElementById("bones_waiting"),true);
-  }
-});
+
 
 function showOrNot(div_element, show){
   if(show && div_element.classList.contains("hidden")){
