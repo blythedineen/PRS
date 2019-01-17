@@ -16,6 +16,7 @@ document.getElementById("enter_name_button").addEventListener("click", function(
   updateNames(p_name);
 });
 
+
 ///////////////////Helper function//////////////////
 function updateNames(name){
   var name_spots=document.getElementsByClassName("player_name_span");
