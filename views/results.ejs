@@ -16,6 +16,9 @@
         <!-- still need player hands -->
         <img id="playerImg" src="../images/player_<%=user.weapon%>.png" width="200" height= "200" align="left">
         <!-- Need replay button -->
+        <form action="/game" method="get">
+          <button type="submit" id = "playAgain">Play Again!</button>
+        </form>
     </div>
   <% include global/footer %>
   <script src="scripts/scripts.js"></script>
