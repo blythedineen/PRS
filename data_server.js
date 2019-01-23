@@ -21,11 +21,14 @@ app.get('/', function(request, response){
 });
 
 app.get('/login', function(request, response){
+  var user=request.query.player_name+", "+request.query.password;
+  var data=fs.readFile("data/users.csv","utf8");
   var user_data={
       name: request.query.player_name,
       password: request.query.password
   };
-  fs.writeFile("data/users.csv",JSON.stringify(user_data),"utf8");
+
+  fs.writeFile("data/users.csv",user,"utf8");
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render('game', {user:user_data});
