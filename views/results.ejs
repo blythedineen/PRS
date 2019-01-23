@@ -10,14 +10,13 @@
   <% include global/header %>
   <div id="results">
       <h2>Game Results</h2>
-      <h4><%=user.name%>, you <%=user.result%> with <%=user.weapon%> against <%=user.villain%> who used <%=user.villainWeapon%>! </h4>
+      <h4><%=user.name%>, you <%=user.result%> with <%=user.weapon%> against <%=user.villain.replace('_', ' ')%> who used <%=user.villainWeapon%>! </h4>
         <!-- photos -->
         <img id="villainImg" src="../images/<%=user.villain%>_<%=user.villainWeapon%>.svg" width="200" height= "200" align="left">
-        <!-- still need player hands -->
         <img id="playerImg" src="../images/player_<%=user.weapon%>.png" width="200" height= "200" align="left">
-        <!-- Need replay button -->
-        <form action="/login?player_name=<%=user.name%>" method="get">
-          <button type="submit" id = "playAgain">Play Again!</button>
+        <!-- replay button -->
+        <form action="/playAgain" method="get">
+          <button type="submit" id = "play_again">Play Again</button>
         </form>
     </div>
   <% include global/footer %>
