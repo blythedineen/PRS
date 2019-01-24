@@ -74,29 +74,6 @@ app.get('/logout', function(request, response){
   response.render('index');
 });
 
-app.get('/playAgain', function(request, response){
-  //use the saved username and password which resets when you return to login page
-  var user_data={};
-  user_data["name"] = userName;
-  user_data["pswd"] = userPSWD;
-  var csv_data = loadCSV("data/users.csv");
-  //if the saved username is empty than return to index page
-  if (user_data["name"] == "") {
-    response.status(200);
-    response.setHeader('Content-Type', 'text/html')
-    response.render('index', {page:request.url, user:user_data, title:"Index"});
-  }
-
-  if (!findUser(user_data,csv_data,request,response, "playGame")){
-    newUser(user_data);
-    csv_data.push(user_data);
-    fs.writeFile("data/users.csv", csv_data.toString(), "utf8");
-    response.status(200);
-    response.setHeader('Content-Type', 'text/html')
-    response.render('game', {page:request.url, user:user_data, title:"playGame"});
-  }
-});
-
 app.get('/:user/results', function(request, response){
   var stuff = gameResult(request.query.weapon,request.query.villain)
   var user_data={
@@ -107,26 +84,29 @@ app.get('/:user/results', function(request, response){
       villainWeapon: stuff[0]
   };
 
-
   var usersCSV = loadCSV("data/users.csv");
-
 
   for(var i = 0; i < usersCSV.length; i++){
     if(usersCSV[i]["name"] == user_data.name){
-      if(usersCSV[0] == "rock"){
+      if(user_data.weapon == "rock"){
         usersCSV[i]["rock"] += 1;
-      }if(usersCSV[0] == "paper"){
+      }if(user_data.weapon == "paper"){
         usersCSV[i]["paper"] += 1;
-      }if(usersCSV[0] == "scissors"){
+      }if(user_data.weapon == "scissors"){
         usersCSV[i]["scissors"] += 1;
       }
-      if(villainStuff[1]=="tie"){
-        usersCSV[i]["ties"] += 1;
-      } if(villainStuff[1]=="lose"){
-        usersCSV[i]["losses"] += 1;
-      } if(villainStuff[1]=="win"){
-        usersCSV[i]["wins"]+=1;
+      if(stuff[1]=="tie"){
+        usersCSV[i]["tie"] += 1;
+      } if(stuff[1]=="lose"){
+        usersCSV[i]["lose"] += 1;
+      } if(stuff[1]=="win"){
+        usersCSV[i]["win"]+=1;
       }
+
+        var all = usersCSV[i]["win"]+usersCSV[i]["lose"]+ usersCSV[i]["tie"];
+        usersCSV[i]["winLoss"]=float(usersCSV[i]["win"]/all);
+
+
     }
   }
 
@@ -136,25 +116,36 @@ app.get('/:user/results', function(request, response){
   writeCSV(usersCSV, "data/users.csv");
 
   var villainsCSV = loadCSV("data/villains.csv");
+//console.log("this is the villainsCSV");
+//console.log(villainsCSV)
+  for(var i = 0; i < villainsCSV.length; i++){
+    //console.log("csv: "+ villainsCSV[i]["name"].toLowerCase());
+    //console.log("userdata: "+ user_data.villain.toLowerCase());
 
-  for(var i = 0; i < usersCSV.length; i++){
-    if(villainsCSV[i]["name"] == user_data.villain){
-      if(villainStuff[0] == "rock"){
+    if(villainsCSV[i]["name"].toLowerCase() == user_data.villain.toLowerCase()){
+      //console.log(user_data.villain);
+      //console.log(stuff);
+      if(stuff[0] == "rock"){
         villainsCSV[i]["rock"] += 1;
-      }if(villainStuff[0] == "paper"){
+      }if(stuff[0] == "paper"){
         villainsCSV[i]["paper"] += 1;
-      }if(villainStuff[0] == "scissors"){
+      }if(stuff[0] == "scissors"){
         villainsCSV[i]["scissors"] += 1;
       }
-      if(villainStuff[1]=="tie"){
-        villainsCSV[i]["ties"] += 1;
-      } if(villainStuff[1]=="lose"){
-        villainsCSV[i]["wins"] += 1;
-      } if(villainStuff[1]=="win"){
-        villainsCSV[i]["losses"]
+      if(stuff[1]=="tie"){
+        villainsCSV[i]["tie"] += 1;
+      } if(stuff[1]=="lose"){
+        villainsCSV[i]["win"] += 1;
+      } if(stuff[1]=="win"){
+        villainsCSV[i]["lose"]+=1;
       }
+      var all = villainsCSV[i]["win"]+villainsCSV[i]["lose"]+ villainsCSV[i]["tie"];
+      villainsCSV[i]["winLoss"]=float(villainsCSV[i]["win"]/all);
+
+
     }
   }
+  //console.log(villainsCSV)
   //for (i=1; i<villainsCSV.length/7; i++){
   //  villainsCSV[i*7].concat("\n");
   //}
@@ -165,7 +156,6 @@ app.get('/:user/results', function(request, response){
   response.render('results', {user:user_data});
 });
 
-var villainStuff = [];
 //takes villain, weapon, returns villainWeapon, game result
 function gameResult(weapon,villain){
   var villainWeapon = strategy(weapon,villain);
@@ -185,13 +175,12 @@ function gameResult(weapon,villain){
 function loadCSV(file) {
   var data = fs.readFileSync(file, "utf8"); //load csv
   var rows = data.split('\n'); //parse csv
-  console.log(rows);
   var info = [];
   for(var i = 0; i < rows.length; i++) {
     var user_d = rows[i].trim().split(",");
     var user = {};
 
-    if(file == "data/users.csv"){
+    if(file == "data/users.csv" && user_d[0]){
       user["name"] = user_d[0];
       user["password"] = user_d[1];
       user["win"] = parseInt(user_d[2]);
@@ -200,8 +189,9 @@ function loadCSV(file) {
       user["rock"] = parseFloat(user_d[5]);
       user["paper"] = parseFloat(user_d[6]);
       user["scissors"] = parseFloat(user_d[7]);
+      user["winLoss"] = parseFloat(user_d[8]);
       info.push(user);
-    } if(file == "data/villains.csv"){
+    } if(file == "data/villains.csv" && user_d[0]){
       user["name"] = user_d[0];
       user["win"] = parseInt(user_d[1]);
       user["lose"] = parseInt(user_d[2]);
@@ -209,28 +199,28 @@ function loadCSV(file) {
       user["rock"] = parseFloat(user_d[4]);
       user["paper"] = parseFloat(user_d[5]);
       user["scissors"] = parseFloat(user_d[6]);
+      user["winLoss"] = parseFloat(user_d[7]);
       info.push(user);
     }
-    console.log(user["name"]+ "wants to say hi")
-  return info;
   }
+  return info;
 }
-function writeCSV(csv_data, csv){
-  console.log("writeCSV")
-  console.log(csv_data);
 
+function writeCSV(csv_data, csv){
   var data = "";
   for(var i=0; i<csv_data.length; i++){
     var rows = Object.keys(csv_data[i]);
+
     for(var j=0; j<rows.length; j++){
-      if(csv_data[i][rows[j+1]]=="undefined"){
-        break;
-      } if(j == rows.length-1){
-        data+=csv_data[i][rows[j]];
-      } else{
-        data+=csv_data[i][rows[j]]+",";
-      }
+        if(csv_data[i][rows[j+1]]=="undefined"){
+            break;
+        } if(j == rows.length-1){
+            data += csv_data[i][rows[j]];
+        } else {
+          data += csv_data[i][rows[j]]+",";
+        }
     }
+
     if (i!=csv_data.length-1){
         data+="\n";
     }
@@ -322,27 +312,39 @@ app.get('/rules', function(request, response){
   response.render('rules');
 });
 app.get('/stats', function(request, response){
+  var userData = loadCSV('data/users.csv');
+  var villainData = loadCSV('data/villains.csv');
+  console.log(villainData);
 
-  //load the csv
-  var users_file=fs.readFileSync('data/users.csv','utf8');
 
-  //parse the csv
-  var rows=users_file.split('\n');
+//   //load the csv
+//   var users_file=fs.readFileSync('data/users.csv','utf8');
+//
+//   //parse the csv
+//   var rows=users_file.split('\n');
+//
+//   var user_data=[];
+//   for(var i=1; i<rows.length; i++){
+//     var user_d=rows[i].trim().split(',');
+//     var user ={};
+//     user["name"]=user_d[0];
+//     user["games_played"]=parseInt(user_d[1]);
+//     user["games_won"]=parseInt(user_d[2]);
+//     user["games_lost"]=parseInt(user_d[3]);
+//     user_data.push(user);
+// }
 
-  var user_data=[];
-  for(var i=1; i<rows.length; i++){
-    var user_d=rows[i].trim().split(',');
-    var user ={};
-    user["name"]=user_d[0];
-    user["games_played"]=parseInt(user_d[1]);
-    user["games_won"]=parseInt(user_d[2]);
-    user["games_lost"]=parseInt(user_d[3]);
-    user_data.push(user);
-}
+  //order the villains
+  var vals = []
+  for(var i = 0; i<villainData.length; i++){
+    //console.log(villainData[i]["winLoss"])
+    vals.push(villainData[i]["winLoss"]);
+  }
+  console.log(vals)
 
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
-  response.render('stats',{user:user_data});
+  response.render('stats',{user:userData, villain:villainData});
 });
 app.get('/about', function(request, response){
   response.status(200);

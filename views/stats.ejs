@@ -8,7 +8,7 @@
   <% include global/header %>
 
   <div id="stats">
-    <h2>Stats- ____ games played</h2>
+    <h2>Player Stats</h2>
     <table>
       <tr>
         <th class="top_row">Player Name</th>
@@ -16,17 +16,71 @@
         <th class="top_row">Games Won</th>
         <th class="top_row">Games Lost</th>
         <th class="top_row">Games Tied</th>
+        <th class="top_row">Win Percentage</th>
+        <th class="top_row"># of Rocks</th>
+        <th class="top_row"># of Papers</th>
+        <th class="top_row"># of Scissors</th>
       </tr>
       <% for (var i=0; i< user.length; i++){%>
       <tr>
         <td><%= user[i]["name"]%></td>
-        <td><%= user[i]["games_played"]%></td>
-        <td><%= user[i]["games_won"]%></td>
-        <td><%= user[i]["games_lost"]%></td>
-        <td><%= user[i]["games_played"]-(user[i]["games_lost"]+user[i]["games_won"])%></td>
+        <td><%= user[i]["win"]+user[i]["lose"]+user[i]["tie"]%></td>
+        <td><%= user[i]["win"]%></td>
+        <td><%= user[i]["lose"]%></td>
+        <td><%= user[i]["tie"]%></td>
+        <td><%= user[i]["winLoss"]%>%</td>
+        <td><%= user[i]["rock"]%></td>
+        <td><%= user[i]["paper"]%></td>
+        <td><%= user[i]["scissors"]%></td>
       </tr>
       <%}%>
     </table>
+
+    <h2>Villain Stats</h2>
+    <table>
+      <tr>
+        <th class="top_row">Villain Name</th>
+        <th class="top_row">Games Played</th>
+        <th class="top_row">Games Won</th>
+        <th class="top_row">Games Lost</th>
+        <th class="top_row">Games Tied</th>
+        <th class="top_row">Win Percentage</th>
+        <th class="top_row"># of Rocks</th>
+        <th class="top_row"># of Papers</th>
+        <th class="top_row"># of Scissors</th>
+      </tr>
+
+
+      <% for (var i=0; i< villain.length; i++){%>
+        <% if(villain[i]["win"]+villain[i]["lose"]+villain[i]["tie"] ==0){%>
+            <tr>
+              <td><%= villain[i]["name"]%></td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+          <%}else{%>
+            <tr>
+              <td><%= villain[i]["name"]%></td>
+              <td><%= villain[i]["win"]+villain[i]["lose"]+villain[i]["tie"]%></td>
+              <td><%= villain[i]["win"]%></td>
+              <td><%= villain[i]["lose"]%></td>
+              <td><%= villain[i]["tie"]%></td>
+              <td><%= villain[i]["winLoss"]%>%</td>
+              <td><%= villain[i]["rock"]%></td>
+              <td><%= villain[i]["paper"]%></td>
+              <td><%= villain[i]["scissors"]%></td>
+            </tr>
+        <%}%>
+      <%}%>
+    </table>
+
+
   </div>
 
   <% include global/footer %>
