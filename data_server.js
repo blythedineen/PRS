@@ -74,29 +74,6 @@ app.get('/logout', function(request, response){
   response.render('index');
 });
 
-app.get('/playAgain', function(request, response){
-  //use the saved username and password which resets when you return to login page
-  var user_data={};
-  user_data["name"] = userName;
-  user_data["pswd"] = userPSWD;
-  var csv_data = loadCSV("data/users.csv");
-  //if the saved username is empty than return to index page
-  if (user_data["name"] == "") {
-    response.status(200);
-    response.setHeader('Content-Type', 'text/html')
-    response.render('index', {page:request.url, user:user_data, title:"Index"});
-  }
-
-  if (!findUser(user_data,csv_data,request,response, "playGame")){
-    newUser(user_data);
-    csv_data.push(user_data);
-    fs.writeFile("data/users.csv", csv_data.toString(), "utf8");
-    response.status(200);
-    response.setHeader('Content-Type', 'text/html')
-    response.render('game', {page:request.url, user:user_data, title:"playGame"});
-  }
-});
-
 app.get('/:user/results', function(request, response){
   var stuff = gameResult(request.query.weapon,request.query.villain)
   var user_data={

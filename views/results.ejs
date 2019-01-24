@@ -15,7 +15,7 @@
         <img id="villainImg" src="../images/<%=user.villain%>_<%=user.villainWeapon%>.svg" width="200" height= "200" align="left">
         <img id="playerImg" src="../images/player_<%=user.weapon%>.png" width="200" height= "200" align="left">
         <!-- replay button -->
-        <form action="/playAgain" method="get">
+        <form action="/index?player_name=<%=user.name=>&password=<%=user.password=>" method="get">
           <button type="submit" id = "play_again">Play Again</button>
         </form>
     </div>
