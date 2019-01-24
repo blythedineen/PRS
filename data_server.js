@@ -56,7 +56,7 @@ app.get('/playAgain', function(request, response){
   if (!findUser(user_data,csv_data,request,response, "playGame")){
     newUser(user_data);
     csv_data.push(user_data);
-    upLoadCSV(csv_data, "data/users.csv");
+    fs.writeFile("data/users.csv", csv_data.toString(), "utf8");
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render('game', {page:request.url, user:user_data, title:"playGame"});
@@ -72,7 +72,11 @@ app.get('/:user/results', function(request, response){
       result: stuff[1],
       villainWeapon: stuff[0]
   };
+
+
   var usersCSV = loadCSV("data/users.csv");
+
+
   for(var i = 0; i < usersCSV.length; i++){
     if(usersCSV[i]["name"] == user_data.name){
       if(usersCSV[0] == "rock"){
@@ -91,14 +95,14 @@ app.get('/:user/results', function(request, response){
       }
     }
   }
-  upLoadCSV(usersCSV, "data/users.csv");
 
   //for (i=1; i<usersCSV.length/8; i++){
   //  usersCSV[i*8].concat("\n");
   //}
-  //fs.writeFile("data/users.csv", usersCSV.toString(), "utf8");
+  writeCSV(usersCSV, "data/users.csv");
 
   var villainsCSV = loadCSV("data/villains.csv");
+
   for(var i = 0; i < usersCSV.length; i++){
     if(villainsCSV[i]["name"] == user_data.villain){
       if(villainStuff[0] == "rock"){
@@ -120,17 +124,12 @@ app.get('/:user/results', function(request, response){
   //for (i=1; i<villainsCSV.length/7; i++){
   //  villainsCSV[i*7].concat("\n");
   //}
-  //fs.writeFile("data/villains.csv", villainsCSV.toString(), "utf8");
-
-  upLoadCSV(villainsCSV, "data/villains.csv");
-
+  writeCSV(villainsCSV, "data/villains.csv")
 
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render('results', {user:user_data});
 });
-
-
 
 var villainStuff = [];
 //takes villain, weapon, returns villainWeapon, game result
@@ -150,51 +149,60 @@ function gameResult(weapon,villain){
 }
 
 function loadCSV(file) {
-  var data = fs.readFileSync(file, "utf8");
-  var rows = data.split('\n');
-  var type = 0;
-  if(file == "data/users.csv"){
-    type = 1;
-  }
+  var data = fs.readFileSync(file, "utf8"); //load csv
+  var rows = data.split('\n'); //parse csv
+  console.log(rows);
   var info = [];
   for(var i = 0; i < rows.length; i++) {
-      var user_d = rows[i].trim().split(",");
-      var user = {};
-      if (type ==0){
-        user["password"] = user_d[1];
-      }
-        user["name"] = user_d[0];
-        user["wins"] = parseInt(user_d[1+type]);
-        user["losses"] = parseInt(user_d[2+type]);
-        user["ties"] = parseInt(user_d[3+type]);
-        user["rock"] = parseFloat(user_d[4+type]);
-        user["paper"] = parseFloat(user_d[5+type]);
-        user["scissors"] = parseFloat(user_d[6+type]);
-        info.push(user);
-      }
-  return info;
-}
+    var user_d = rows[i].trim().split(",");
+    var user = {};
 
-function upLoadCSV(user_data, file_name) {
-  console.log("please tell me this is working or else I will cry")
-  var out="";
-  for (var i = 0; i < user_data.length; i++) {
-    arr=Object.keys(user_data[i]);
-    for (var k=0;k<arr.length;k++){
-      if(k == arr.length-1) {
-        out+=user_data[i][arr[k]];
-      } else {
-        out+=user_data[i][arr[k]]+",";
+    if(file == "data/users.csv"){
+      user["name"] = user_d[0];
+      user["password"] = user_d[1];
+      user["win"] = parseInt(user_d[2]);
+      user["lose"] = parseInt(user_d[3]);
+      user["tie"] = parseInt(user_d[4]);
+      user["rock"] = parseFloat(user_d[5]);
+      user["paper"] = parseFloat(user_d[6]);
+      user["scissors"] = parseFloat(user_d[7]);
+      info.push(user);
+    } if(file == "data/villains.csv"){
+      user["name"] = user_d[0];
+      user["win"] = parseInt(user_d[1]);
+      user["lose"] = parseInt(user_d[2]);
+      user["tie"] = parseInt(user_d[3]);
+      user["rock"] = parseFloat(user_d[4]);
+      user["paper"] = parseFloat(user_d[5]);
+      user["scissors"] = parseFloat(user_d[6]);
+      info.push(user);
+    }
+    console.log(user["name"]+ "wants to say hi")
+  return info;
+  }
+}
+function writeCSV(csv_data, csv){
+  console.log("writeCSV")
+  console.log(csv_data);
+
+  var data = "";
+  for(var i=0; i<csv_data.length; i++){
+    var rows = Object.keys(csv_data[i]);
+    for(var j=0; j<rows.length; j++){
+      if(csv_data[i][rows[j+1]]=="undefined"){
+        break;
+      } if(j == rows.length-1){
+        data+=csv_data[i][rows[j]];
+      } else{
+        data+=csv_data[i][rows[j]]+",";
       }
     }
-    if (i!=user_data.length-1){
-        out+="\n";
+    if (i!=csv_data.length-1){
+        data+="\n";
     }
   }
-  console.log(out);
-  fs.writeFileSync(file_name, out, "utf8")
+  fs.writeFile(csv,data,'utf8',function(){});
 }
-
 
 var counter = 0;
 function strategy(weapon,villain){
@@ -274,25 +282,22 @@ function strategy(weapon,villain){
       }
   } else{return "rock";}
 }
-
-
 app.get('/rules', function(request, response){
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render('rules');
 });
-
 app.get('/stats', function(request, response){
+
   //load the csv
   var users_file=fs.readFileSync('data/users.csv','utf8');
-  console.log(users_file);
+
   //parse the csv
   var rows=users_file.split('\n');
-  console.log(rows);
+
   var user_data=[];
   for(var i=1; i<rows.length; i++){
     var user_d=rows[i].trim().split(',');
-    console.log(user_d);
     var user ={};
     user["name"]=user_d[0];
     user["games_played"]=parseInt(user_d[1]);
@@ -300,7 +305,7 @@ app.get('/stats', function(request, response){
     user["games_lost"]=parseInt(user_d[3]);
     user_data.push(user);
 }
-console.log(user_data);
+
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render('stats',{user:user_data});
