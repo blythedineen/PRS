@@ -21,14 +21,48 @@ app.get('/', function(request, response){
 });
 
 app.get('/login', function(request, response){
-  var user=request.query.player_name+", "+request.query.password;
-  //var data=fs.readFile("data/users.csv","utf8");
+  var password_array=[];
+  var username_array=[];
+  var data=fs.readFileSync("data/users.csv","utf8");
+  var data_array=data.split("\n");
+  console.log(data_array);
+  for(var i=0; i<data_array.length; i++){
+    var user_array=data_array[i].split(",");
+    console.log(user_array);
+    for(var j=0; j<user_array.length;j+=1){
+      if(j%2==0){
+        username_array.push(user_array[j]);
+        }
+        else{
+        password_array.push(user_array[j]);
+        }
+      }
+    }
+  for(var y=0; y<username_array.length; y++){
+    if(request.query.player_name==username_array[y]){
+      if(request.query.password==password_array[y]){
+        response.status(200);
+        response.setHeader('Content-Type', 'text/html')
+        response.render('game', {user:user_data});
+      }
+      else{
+        response.status(200);
+        response.setHeader('Content-Type', 'text/html')
+        response.render('index');
+      }
+    }
+    else{
+      username_array.push(request.query.player_name);
+      password_array.push(request.query.password);
+      fs.writeFileSync("data/users.csv",username_array,"utf8");
+    }
+
+    }
   var user_data={
       name: request.query.player_name,
       password: request.query.password
   };
 
-  //fs.writeFile("data/users.csv",user,"utf8");
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render('game', {user:user_data});
