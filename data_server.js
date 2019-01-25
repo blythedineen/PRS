@@ -21,55 +21,46 @@ app.get('/', function(request, response){
 
 app.get('/login', function(request, response){
   var data=loadCSV("data/users.csv");
-  var new_user=false;
+  var new_user=true;
   for(var i=0; i<data.length;i++){
     if(request.query.player_name==data[i]["name"]){
+      new_user=false;
       if(request.query.password==data[i]["password"]){
         var user_data={};
         user_data.name=data[i].name;
         response.status(200);
         response.setHeader('Content-Type', 'text/html')
         response.render('game', {user:user_data});
+        break;
       }
       else{
         response.status(200);
         response.setHeader('Content-Type', 'text/html')
         response.render('index');
+        break;
       }
     }
   }
-      new_user=true;
       if(new_user){
-      var user={};
-      user["name"] = request.query.player_name;
-      user["password"] = request.query.password;
-      user["win"] = 0;
-      user["lose"] = 0;
-      user["tie"] = 0;
-      user["rock"] = 0;
-      user["paper"] = 0;
-      user["scissors"] = 0;
-      data.push(user);
-    }
+          var user={};
+          user["name"] = request.query.player_name;
+          user["password"] = request.query.password;
+          user["win"] = 0;
+          user["lose"] = 0;
+          user["tie"] = 0;
+          user["rock"] = 0;
+          user["paper"] = 0;
+          user["scissors"] = 0;
+          data.push(user);
+
+
       var user_data={};
       user_data.name=user.name;
       writeCSV(data, "data/users.csv");
       response.status(200);
       response.setHeader('Content-Type', 'text/html');
       response.render('game', {user:user_data});
-
-});
-
-
-
-  var user_data={
-      name: request.query.player_name,
-      password: request.query.password
-  };
-
-  response.status(200);
-  response.setHeader('Content-Type', 'text/html')
-  response.render('game', {user:user_data});
+}
 });
 
 app.get('/logout', function(request, response){
@@ -108,7 +99,7 @@ app.get('/:user/results', function(request, response){
       }
 
         var all = usersCSV[i]["win"]+usersCSV[i]["lose"]+ usersCSV[i]["tie"];
-        usersCSV[i]["winLoss"]=float(usersCSV[i]["win"]/all);
+        usersCSV[i]["winLoss"]=parseFloat(usersCSV[i]["win"]/all);
 
 
     }
@@ -144,7 +135,7 @@ app.get('/:user/results', function(request, response){
         villainsCSV[i]["lose"]+=1;
       }
       var all = villainsCSV[i]["win"]+villainsCSV[i]["lose"]+ villainsCSV[i]["tie"];
-      villainsCSV[i]["winLoss"]=float(villainsCSV[i]["win"]/all);
+      villainsCSV[i]["winLoss"]=parseFloat(villainsCSV[i]["win"]/all);
 
 
     }
