@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>P,R,S - Index</title>
+  <link rel="stylesheet" href="styles/style.css">
+ </head>
+
+<body>
+  <% include global/header %>
+
+
+  <div id="feedback">
+  </div>
+  <div id="enter_name">
+    <h2>Wrong Password, Try Again!</h2>
+    <form action="/login" method="get">
+      Please enter your name:<input type="text" id="enter_name_input" name="player_name">
+      Enter password:<input type="text" id="enter_password_input" name="password">
+      <button type="submit" id = "enter_name_button">Submit Name</button>
+    </form>
+  </div>
+  <% include global/footer %>
+  <script src="scripts/scripts.js"></script>
+ </body>
+</html>
