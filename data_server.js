@@ -22,23 +22,25 @@ app.get('/', function(request, response){
 
 app.get('/login', function(request, response){
   var data=loadCSV("data/users.csv");
+  var new_user=false;
   for(var i=0; i<data.length;i++){
     if(request.query.player_name==data[i]["name"]){
       if(request.query.password==data[i]["password"]){
         var user_data={};
         user_data.name=data[i].name;
         response.status(200);
-        response.setHeader('Content-Type', 'text/html');
+        response.setHeader('Content-Type', 'text/html')
         response.render('game', {user:user_data});
       }
       else{
         response.status(200);
         response.setHeader('Content-Type', 'text/html')
         response.render('index');
-        console.log("wrong");
       }
     }
   }
+      new_user=true;
+      if(new_user){
       var user={};
       user["name"] = request.query.player_name;
       user["password"] = request.query.password;
@@ -49,6 +51,7 @@ app.get('/login', function(request, response){
       user["paper"] = 0;
       user["scissors"] = 0;
       data.push(user);
+    }
       var user_data={};
       user_data.name=user.name;
       writeCSV(data, "data/users.csv");
@@ -60,7 +63,15 @@ app.get('/login', function(request, response){
 
 
 
+  var user_data={
+      name: request.query.player_name,
+      password: request.query.password
+  };
 
+  response.status(200);
+  response.setHeader('Content-Type', 'text/html')
+  response.render('game', {user:user_data});
+});
 
 app.get('/logout', function(request, response){
   response.status(200);
@@ -202,6 +213,26 @@ function loadCSV(file) {
 
 function writeCSV(csv_data, csv){
   var data = "";
+
+  //sorts the villains
+  csv_data.sort(function(v1,v2) {
+    var v2 = 0;
+    if (v2.win+v2.lose+v2.tie == 0) {
+      v2winRatio = 0;
+    } else {
+      v2winRatio = Math.round((v2.win/v2.win+v2.lose+v2.tie)*100);
+    }
+
+    var v1winRatio = 0;
+    if (v1.win+v1.lose+v1.tie == 0) {
+      v1winRatio = 0;
+    } else {
+      v1winRatio = Math.round((v1.win/v1.win+v1.lose+v1.tie)*100);
+    }
+    var diff = v2winRatio-v1winRatio
+    return (diff);
+  });
+
   for(var i=0; i<csv_data.length; i++){
     var rows = Object.keys(csv_data[i]);
 
@@ -329,12 +360,24 @@ app.get('/stats', function(request, response){
 // }
 
   //order the villains
-  var vals = []
-  for(var i = 0; i<villainData.length; i++){
-    //console.log(villainData[i]["winLoss"])
-    vals.push(villainData[i]["winLoss"]);
-  }
-  console.log(vals)
+  // var vals = []
+  // for(var i = 0; i<villainData.length; i++){
+  //   //console.log(villainData[i]["winLoss"])
+  //   vals.push(villainData[i]["winLoss"]);
+  // }
+  // console.log(vals)
+  // vals.sort();
+  //
+  // var order = {}
+  // for(var j = 0; j<vals.length; j++){
+  //   for(var i = 0; i<villainData.length; i++){
+  //     if(villainData[i]["winLoss"] == vals[j] && !()){
+  //       order.push(villainData[i]);
+  //       break;
+  //     }
+  //   }
+  // }
+
 
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
