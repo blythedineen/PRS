@@ -36,7 +36,7 @@ app.get('/login', function(request, response){
       else{
         response.status(200);
         response.setHeader('Content-Type', 'text/html')
-        response.render('index');
+        response.render('error');
         break;
       }
     }
@@ -67,6 +67,12 @@ app.get('/logout', function(request, response){
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render('index');
+});
+
+app.get('/play_again', function(request, response){
+  response.status(200);
+  response.setHeader('Content-Type', 'text/html')
+  response.render('game');
 });
 
 app.get('/:user/results', function(request, response){
