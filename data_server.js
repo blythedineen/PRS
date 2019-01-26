@@ -212,7 +212,7 @@ function writeCSV(csv_data, csv){
 
   //sorts the villains
   csv_data.sort(function(v1,v2) {
-    var v2 = 0;
+    var v2winRatio = 0;
     if (v2.win+v2.lose+v2.tie == 0) {
       v2winRatio = 0;
     } else {
