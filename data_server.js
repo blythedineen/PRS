@@ -72,7 +72,7 @@ app.get('/logout', function(request, response){
 app.get('/play_again', function(request, response){
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
-  response.render('game');
+  response.render('index');
 });
 
 app.get('/:user/results', function(request, response){
